@@ -121,6 +121,33 @@ internal final class AuthenticatorWebView: WKWebView, WKNavigationDelegate {
             }
         }
     }
+    
+    /// A method called everytime a method fails.
+    /// 
+    /// - parameters:
+    ///   - webView: A valid `WKWebView`.
+    ///   - navigation: An optional `WKNavigation`
+    ///   - error: A valid `Error`.
+    func webView(_ webView: WKWebView, didFail navigation: WKNavigation!, withError error: Error) {
+        handleError(error)
+    }
+    
+    /// A method called everytime a method fails.
+    /// 
+    /// - parameters:
+    ///  - webView: A valid `WKWebView`.
+    ///  - navigation: An optional `WKNavigation`
+    ///  - error: A valid `Error`.
+    func webView(_ webView: WKWebView, didFailProvisionalNavigation navigation: WKNavigation!, withError error: Error) {
+        handleError(error)
+    }
+}
+
+private extension AuthenticatorWebView {
+    func handleError(_ error: Swift.Error) {
+        subject.send(completion: .failure(error))
+        isAuthenticating = false
+    }
 }
 
 #endif
